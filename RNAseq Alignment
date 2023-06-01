@@ -1,4 +1,9 @@
 #Connecting to computer cluster (using MobaXTerm)
 ssh -p 12034 acmo03@cluster.di.fct.unl.pt
 
-#
+#Creating folder to save the data
+mkdir <folderName>
+cd <folderName>
+
+#Getting the data: raw RNAseq data and human trasncriptome
+cp /mnt/share/acmo/AppCOmics_data/Genomes/gencode.v39.transcriptome.idx .
