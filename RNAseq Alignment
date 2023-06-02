@@ -5,9 +5,12 @@ ssh -p 12034 acmo03@cluster.di.fct.unl.pt
 mkdir <folderName>
 cd <folderName>
 
-#Getting the data: raw RNAseq data and human trasncriptome
+#Getting the data
+
+##Reference Human Transcriptome
 cp /mnt/share/acmo/AppCOmics_data/Genomes/gencode.v39.transcriptome.idx .
 
+##Extraction of RNA-seq samples files
 docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084684
 docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084686
 docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084687
