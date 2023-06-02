@@ -7,3 +7,22 @@ cd <folderName>
 
 #Getting the data: raw RNAseq data and human trasncriptome
 cp /mnt/share/acmo/AppCOmics_data/Genomes/gencode.v39.transcriptome.idx .
+
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084684
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084686
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084687
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084689
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084690
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084692
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084693
+docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084695
+
+#Performing the alignments using Kallisto and creating the repective folders
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ctrl_rep1 --single -t 8 -l 250 -s 50 SRR13084684.fastq
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ZIKVpos_rep1 --single -t 8 -l 250 -s 50 SRR13084686.fastq
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ctrl_rep2 --single -t 8 -l 250 -s 50 SRR13084687.fastq
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ZIKVpos_rep2 --single -t 8 -l 250 -s 50 SRR13084689.fastq
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ctrl_rep3 --single -t 8 -l 250 -s 50 SRR13084690.fastq
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ZIKVpos_rep3 --single -t 8 -l 250 -s 50 SRR13084692.fastq
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ctrl_rep4 --single -t 8 -l 250 -s 50 SRR13084693.fastq
+docker run -v /home:/home/ -w=$PWD --rm zlskidmore/kallisto:0.46.0 kallisto quant -i gencode.v39.transcriptome.idx -o ZIKVpos_rep4 --single -t 8 -l 250 -s 50 SRR13084695.fastq
