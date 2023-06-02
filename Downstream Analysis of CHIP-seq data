@@ -1,4 +1,4 @@
-#Extraction of samples files
+#Extraction of CHIP-seq samples files
 
 docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084717
 docker run -v $PWD:/data/ -w=/data/ --rm ncbi/sra-tools:2.11.1 fasterq-dump --split-files SRR13084719
