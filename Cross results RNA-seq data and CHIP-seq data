@@ -1,1 +1,194 @@
+##############################################################################
+################## ZIKVpos_rep6 sample Analysis ##############################
 
+# read in the peak summit file
+
+#peakfile <-read.table("/home/participant/Course_Materials/ChIPSeq/Materials/Results/Peaks/summits.bed")
+peakfile <-read.table("ZIKVpos_rep6_summits_filtered.bed")
+head(peakfile)
+
+# get a 400bp window around summit (-200 and +200)
+Motif_Peaks <- data.frame((peakfile$V1), (peakfile$V2-200), (peakfile$V2+200), stringsAsFactors = FALSE)
+head(Motif_Peaks)
+
+# create bed file
+options(scipen=999)
+
+#write.table(Motif_Peaks, file= "/home/participant/Course_Materials/ChIPSeq/Materials/motifs/Peaks_for_motif_detection.bed", 
+ #           row.names=FALSE,col.names = FALSE, sep="\t", quote =FALSE)
+
+write.table(Motif_Peaks, file= "Peaks6_for_motif_detection.bed", row.names=FALSE,col.names = FALSE, sep="\t", quote =FALSE)
+
+# list files in directory and check if the file you created is there.
+dir()
+
+#if (!require("BiocManager", quietly = TRUE))
+  #install.packages("BiocManager")
+
+#BiocManager::install("ChIPpeakAnno", force=TRUE)
+
+library("ChIPpeakAnno")
+library("GenomicRanges")
+
+#library("rtracklayer")
+#bed <- import("/home/participant/Course_Materials/ChIPSeq/Materials/motifs/Peaks_for_motif_detection.bed")
+#gr1 <- GRanges(seqnames=bed$V1, ranges=IRanges(start=bed$V2, end=bed$V3)) 
+
+#read in the bed file
+df1<-read.table("Peaks6_for_motif_detection.bed", header=FALSE)
+
+#convert the peaks to a GRanges object
+gr1 <- GRanges(seqnames=df1$V1, ranges=IRanges(start=df1$V2, end=df1$V3))
+
+
+#if (!require("BiocManager", quietly = TRUE))
+  #install.packages("BiocManager")
+
+#BiocManager::install("EnsDb.Hsapiens.v86", force=TRUE)
+
+##annotation
+library("EnsDb.Hsapiens.v86")
+
+## create annotation file from EnsDb (Ensembl) or TxDb (transcript annotation) packages
+
+annoData <- toGRanges(EnsDb.Hsapiens.v86, feature="gene")
+annoData[1:2]
+
+# annotate the peak GRanges object with peaks mapped to gene with a -2000 and 500 bp window around the TSS
+
+anno.gr1 <- annotatePeakInBatch(gr1, 
+                                AnnotationData=annoData, 
+                                output="nearestBiDirectionalPromoters",
+                                bindingRegion=c(-2000, 500))
+
+#trim out of bound ranges
+anno.gr1 <- trim(anno.gr1)
+
+#annotate with Entrez IDs
+#BiocManager::install("org.Hs.eg.db")
+
+library("org.Hs.eg.db")
+anno.gr1 <- addGeneIDs(anno.gr1,"org.Hs.eg.db",IDs2Add = "entrez_id")
+a<-data.frame(anno.gr1)
+
+# list annotated peaks
+head(anno.gr1)
+
+#Vector with only the gene names retrieved from the annotated peaks in CHIP-seq
+chip6<-(anno.gr1$gene_name)
+
+#Differentially expressed genes (DGEs) list retrieved from RNA-seq analysis and vector with the name of the genes
+dges<-read.xlsx("DEGs.xlsx")
+rna6<-dges$GeneName
+
+#List with the name of the genes retrieved from CHIP-seq and RNA-seq
+equal_genes_list<-list(chip,rna)
+equal_genes_list
+
+#Intersection between the CHIP-seq data and RNA-seq data and respective list of genes in common
+equal_genes<-intersect(a$gene_name,dges$GeneName)
+equal_genes
+
+#VenDiagram to represent the intersection of CHIP-seq and RNA-seq data
+#if (!require(devtools)) install.packages("devtools")
+#devtools::install_github("gaospecial/ggVennDiagram")
+library("ggVennDiagram")
+ggVennDiagram(equal_genes_list[1:2],label = "count", category.names = c("Chipseq - AnnotadedPeaks", "RNAseq - DGEs"))
+
+##############################################################################
+################## ZIKVpos_rep7 Analysis #####################################
+
+
+# read in the peak summit file
+
+#peakfile <-read.table("/home/participant/Course_Materials/ChIPSeq/Materials/Results/Peaks/summits.bed")
+peakfile <-read.table("ZIKVpos_rep7_summits_filtered.bed")
+head(peakfile)
+
+# get a 400bp window around summit (-200 and +200)
+Motif_Peaks <- data.frame((peakfile$V1), (peakfile$V2-200), (peakfile$V2+200), stringsAsFactors = FALSE)
+head(Motif_Peaks)
+
+# create bed file
+options(scipen=999)
+
+#write.table(Motif_Peaks, file= "/home/participant/Course_Materials/ChIPSeq/Materials/motifs/Peaks_for_motif_detection.bed", 
+#           row.names=FALSE,col.names = FALSE, sep="\t", quote =FALSE)
+
+write.table(Motif_Peaks, file= "Peaks7_for_motif_detection.bed", row.names=FALSE,col.names = FALSE, sep="\t", quote =FALSE)
+
+# list files in directory and check if the file you created is there.
+dir()
+
+#if (!require("BiocManager", quietly = TRUE))
+#install.packages("BiocManager")
+
+#BiocManager::install("ChIPpeakAnno", force=TRUE)
+
+library("ChIPpeakAnno")
+library("GenomicRanges")
+
+#library("rtracklayer")
+#bed <- import("/home/participant/Course_Materials/ChIPSeq/Materials/motifs/Peaks_for_motif_detection.bed")
+#gr1 <- GRanges(seqnames=bed$V1, ranges=IRanges(start=bed$V2, end=bed$V3)) 
+
+#read in the bed file
+df1<-read.table("Peaks6_for_motif_detection.bed", header=FALSE)
+
+#convert the peaks to a GRanges object
+gr1 <- GRanges(seqnames=df1$V1, ranges=IRanges(start=df1$V2, end=df1$V3))
+
+
+#if (!require("BiocManager", quietly = TRUE))
+#install.packages("BiocManager")
+
+#BiocManager::install("EnsDb.Hsapiens.v86", force=TRUE)
+
+##annotation
+library("EnsDb.Hsapiens.v86")
+
+## create annotation file from EnsDb (Ensembl) or TxDb (transcript annotation) packages
+
+annoData <- toGRanges(EnsDb.Hsapiens.v86, feature="gene")
+annoData[1:2]
+
+# annotate the peak GRanges object with peaks mapped to gene with a -2000 and 500 bp window around the TSS
+
+anno.gr1 <- annotatePeakInBatch(gr1, 
+                                AnnotationData=annoData, 
+                                output="nearestBiDirectionalPromoters",
+                                bindingRegion=c(-2000, 500))
+
+#trim out of bound ranges
+anno.gr1 <- trim(anno.gr1)
+
+#annotate with Entrez IDs
+#BiocManager::install("org.Hs.eg.db")
+
+library("org.Hs.eg.db")
+anno.gr1 <- addGeneIDs(anno.gr1,"org.Hs.eg.db",IDs2Add = "entrez_id")
+a<-data.frame(anno.gr1)
+
+# list annotated peaks
+head(anno.gr1)
+
+#Vector with only the gene names retrieved from the annotated peaks in CHIP-seq
+chip7<-(anno.gr1$gene_name)
+
+#Differentially expressed genes (DGEs) list retrieved from RNA-seq analysis and vector with the name of the genes
+dges<-read.xlsx("DEGs.xlsx")
+rna7<-dges$GeneName
+
+#List with the name of the genes retrieved from CHIP-seq and RNA-seq
+equal_genes_list<-list(chip,rna)
+equal_genes_list
+
+#Intersection between the CHIP-seq data and RNA-seq data and respective list of genes in common
+equal_genes<-intersect(a$gene_name,dges$GeneName)
+equal_genes
+
+#VenDiagram to represent the intersection of CHIP-seq and RNA-seq data
+#if (!require(devtools)) install.packages("devtools")
+#devtools::install_github("gaospecial/ggVennDiagram")
+library("ggVennDiagram")
+ggVennDiagram(equal_genes_list[1:2],label = "count", category.names = c("Chipseq - AnnotadedPeaks", "RNAseq - DGEs"))
