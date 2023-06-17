@@ -18,7 +18,7 @@
 
 library(tximport)
 
-setwd("C:/Users/Camila Lopes/Desktop/MCBBi/2ºSemestre/MCMO/Projeto")
+setwd("")
 
 load('gencode.v38_geneInfo.RData'); head(geneInfo)
 
