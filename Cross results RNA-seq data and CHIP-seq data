@@ -82,7 +82,7 @@ dges<-read.xlsx("DEGs.xlsx")
 rna6<-dges$GeneName
 
 #List with the name of the genes retrieved from CHIP-seq and RNA-seq
-equal_genes_list<-list(chip,rna)
+equal_genes_list<-list(chip6,rna6)
 equal_genes_list
 
 #Intersection between the CHIP-seq data and RNA-seq data and respective list of genes in common
@@ -180,7 +180,7 @@ dges<-read.xlsx("DEGs.xlsx")
 rna7<-dges$GeneName
 
 #List with the name of the genes retrieved from CHIP-seq and RNA-seq
-equal_genes_list<-list(chip,rna)
+equal_genes_list<-list(chip7,rna7)
 equal_genes_list
 
 #Intersection between the CHIP-seq data and RNA-seq data and respective list of genes in common
